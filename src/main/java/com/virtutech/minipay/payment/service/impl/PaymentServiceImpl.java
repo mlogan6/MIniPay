@@ -37,7 +37,6 @@ public class PaymentServiceImpl implements PaymentService {
     public PaymentResponse getPaymentById(Long id) {
         Payment payment = paymentRepository.findById(id)
                 .orElseThrow(() -> new PaymentNotFoundException(id));
-);
         return mapToResponse(payment);
     }
 
@@ -60,7 +59,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public void deletePayment(Long id) {
-        Payment payment = paymentRepository.findById(Long id)
+        Payment payment = paymentRepository.findById(id)
                 .orElseThrow(() -> new PaymentNotFoundException(id));
         paymentRepository.delete(payment);
     }
