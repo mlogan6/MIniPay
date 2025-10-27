@@ -3,6 +3,7 @@ package com.virtutech.minipay.payment.service.impl;
 import com.virtutech.minipay.payment.dto.PaymentRequest;
 import com.virtutech.minipay.payment.dto.PaymentResponse;
 import com.virtutech.minipay.payment.entity.Payment;
+import com.virtutech.minipay.payment.exception.PaymentNotFoundException;
 import com.virtutech.minipay.payment.repository.PaymentRepository;
 import com.virtutech.minipay.payment.service.PaymentService;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,8 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public PaymentResponse getPaymentById(Long id) {
         Payment payment = paymentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Payment not found"));
+                .orElseThrow(() -> new PaymentNotFoundException(id));
+);
         return mapToResponse(payment);
     }
 
@@ -47,7 +49,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public PaymentResponse updatePayment(Long id, PaymentRequest request) {
         Payment payment = paymentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Payment not found"));
+                .orElseThrow(() -> new PaymentNotFoundException(id));
         payment.setAccountId(request.accountId());
         payment.setAmount(request.amount());
         payment.setCurrency(request.currency());
@@ -59,7 +61,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public void deletePayment(Long id) {
         Payment payment = paymentRepository.findById(Long id)
-                .orElseThrow(() -> new RuntimeException("Payment not found"));
+                .orElseThrow(() -> new PaymentNotFoundException(id));
         paymentRepository.delete(payment);
     }
 
